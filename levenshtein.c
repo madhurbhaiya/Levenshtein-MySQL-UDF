@@ -49,8 +49,17 @@ typedef __int64 longlong;
 #else
 #endif /*__WIN__*/
 #else
-//#include <my_global.h>
-//#include <my_sys.h>
+
+
+/*
+In Ubuntu 20.04+, my_global.h and my_sys.h dont exist anymore.
+Refer: https://github.com/juanmirocks/Levenshtein-MySQL-UDF/issues/11#issuecomment-906148262
+Also, check commit at: https://github.com/NejRemeslnici/Levenshtein-MySQL-UDF/commit/296a9abd9cb9d2089578c6ccb079ca16b0faa114
+#include <my_global.h>
+#include <my_sys.h>
+*/
+
+
 #if defined(MYSQL_SERVER)
 #include <m_string.h>
 #else
@@ -58,13 +67,10 @@ typedef __int64 longlong;
 #include <string.h>
 #endif
 #endif
-
 #include <mysql.h>
 #include <ctype.h>
 typedef unsigned long long ulonglong;
 typedef long long longlong;
-
-#ifdef HAVE_DLOPEN
 
 /* (Expected) maximum number of digits to return */
 #define LEVENSHTEIN_MAX 3
@@ -482,5 +488,3 @@ double levenshtein_k_ratio(UDF_INIT *initid, UDF_ARGS *args, char *is_null, char
   else
     return 1.0 - dist/maxlen;
 }
-
-#endif /* HAVE_DLOPEN */
